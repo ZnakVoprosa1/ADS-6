@@ -26,7 +26,7 @@ class TPQueue {
   }
 
   void push(const T& item) {
-   Node* newNode = new Node(item);
+    Node* newNode = new Node(item);
     if (!head || comparePriorities(item, head->data)) {
       newNode->next = head;
       head = newNode;
