@@ -9,7 +9,7 @@ class TPQueue {
   struct Node {
     T data;
     Node* next;
-    Node(const T& d) : data(d), next(nullptr) {}
+    explicit Node(T data, Node* next = nullptr) : data(data), next(next) {}
   };
 
   Node* head;
@@ -18,42 +18,42 @@ class TPQueue {
   TPQueue() : head(nullptr) {}
 
   ~TPQueue() {
-   while (head) {
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-   }
+    while (head) {
+      Node* temp = head;
+      head = head->next;
+      delete temp;
+    }
   }
 
   void push(const T& item) {
    Node* newNode = new Node(item);
-   if (!head || comparePriorities(item, head->data)) {
-    newNode->next = head;
-    head = newNode;
-   } else {
-    Node* current = head;
-    while (current->next && comparePriorities(current->next->data, item)) {
-     current = current->next;
+    if (!head || comparePriorities(item, head->data)) {
+      newNode->next = head;
+      head = newNode;
+    } else {
+      Node* current = head;
+      while (current->next && comparePriorities(current->next->data, item)) {
+      current = current->next;
+      }
+      newNode->next = current->next;
+      current->next = newNode;
     }
-    newNode->next = current->next;
-    current->next = newNode;
-   }
   }
 
 
   T pop() {
-   if (!head) {
-    throw std::out_of_range("Queue is empty");
-   }
-   Node* temp = head;
-   T data = temp->data;
-   head = head->next;
-   delete temp;
-   return data;
+    if (!head) {
+      throw std::out_of_range("Queue is empty");
+    }
+    Node* temp = head;
+    T data = temp->data;
+    head = head->next;
+    delete temp;
+    return data;
   }
 
   bool empty() const {
-   return head == nullptr;
+    return head == nullptr;
   }
 
  private:
